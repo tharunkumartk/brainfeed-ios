@@ -16,7 +16,7 @@ struct UserResponse: Codable {
     let user: User
 }
 
-struct RandomPostsResponse: Codable {
+struct RandomPostsWrapper: Codable {
     let posts: [Post]
 }
 
@@ -25,6 +25,42 @@ struct LikeUnlikeResponse: Codable {
 }
 
 class UserService {
+    static func markPostAsViewed(userId: String, postId: String) async throws {
+        print("Marking post with ID: \(postId) as viewed for user: \(userId)")
+        guard let url = APIURLConstructor.makeURL(path: "/users/\(userId)/view-post") else {
+            print("Error: Invalid URL for marking post as viewed")
+            throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+        }
+                
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+                
+        let requestBody = ["postId": postId]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+                
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+                    
+            print("Received data for marking post as viewed. Size: \(data.count) bytes")
+                    
+            // Print the entire JSON response
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw JSON response for marking post as viewed:")
+                print(jsonString)
+            } else {
+                print("Unable to convert data to string for marking post as viewed")
+            }
+                    
+            // You can decode the response if needed, similar to other functions
+            // For now, we'll just print a success message
+            print("Successfully marked post as viewed")
+        } catch {
+            print("Error marking post as viewed: \(error.localizedDescription)")
+            throw error
+        }
+    }
+    
     static func createUser(id: String) async throws -> User {
         print("Creating user with ID: \(id)")
         guard let url = APIURLConstructor.makeURL(path: "/users") else {
@@ -149,9 +185,9 @@ class UserService {
                 print("Unable to convert data to string for random posts fetch")
             }
                 
-            let response = try JSONDecoder().decode(RandomPostsResponse.self, from: data)
-            print("Successfully decoded \(response.posts.count) random posts")
-            return response.posts
+            let wrapper = try JSONDecoder().decode(RandomPostsWrapper.self, from: data)
+            print("Successfully decoded \(wrapper.posts.count) random posts")
+            return wrapper.posts
         } catch {
             print("Error fetching random posts: \(error.localizedDescription)")
             throw error

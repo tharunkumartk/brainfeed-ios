@@ -1,10 +1,3 @@
-//
-//  Post.swift
-//  BrainFeed
-//
-//  Created by Tharun Kumar on 9/21/24.
-//
-
 import Foundation
 
 struct Post: Identifiable, Hashable, Codable {
@@ -36,12 +29,16 @@ struct Post: Identifiable, Hashable, Codable {
         title = try container.decode(String.self, forKey: .title)
         likeCount = try container.decode(Int.self, forKey: .likeCount)
         
-        // Decode date from ISO8601 string
+        // Decode date from the specific format string
         let dateString = try container.decode(String.self, forKey: .date)
-        if let date = ISO8601DateFormatter().date(from: dateString) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        if let date = dateFormatter.date(from: dateString) {
             self.date = date
         } else {
-            throw DecodingError.dataCorruptedError(forKey: .date, in: container, debugDescription: "Date string does not match expected format")
+            throw DecodingError.dataCorruptedError(forKey: .date, in: container, debugDescription: "Date string does not match expected format: \(dateString)")
         }
     }
     
@@ -53,8 +50,11 @@ struct Post: Identifiable, Hashable, Codable {
         try container.encode(title, forKey: .title)
         try container.encode(likeCount, forKey: .likeCount)
         
-        // Encode date to ISO8601 string
-        let dateString = ISO8601DateFormatter().string(from: date)
+        // Encode date to the specific format string
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        let dateString = dateFormatter.string(from: date)
         try container.encode(dateString, forKey: .date)
     }
 }

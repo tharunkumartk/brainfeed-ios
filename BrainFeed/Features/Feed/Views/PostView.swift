@@ -82,6 +82,9 @@ struct PostView: View {
             
             Divider()
         }
+        .onDisappear(perform: {
+            print("Post \(post.id) has disappeared!")
+        })
         .padding()
     }
     
@@ -104,19 +107,26 @@ struct PostView: View {
     
     private func formatDate(_ date: Date) -> String {
         let now = Date()
-        let components = Calendar.current.dateComponents([.minute, .hour, .day], from: date, to: now)
+        print("Pre-formatted date: \(date.description) Current date: \(now.description)")
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date, to: now)
         
-        if let minutes = components.minute, minutes < 60 {
-            return "\(minutes) minute\(minutes == 1 ? "" : "s") ago"
-        } else if let hours = components.hour, hours < 24 {
-            return "\(hours) hour\(hours == 1 ? "" : "s") ago"
-        } else if let days = components.day, days < 7 {
+        if let years = components.year, years > 0 {
+            return "\(years) year\(years == 1 ? "" : "s") ago"
+        } else if let months = components.month, months > 0 {
+            return "\(months) month\(months == 1 ? "" : "s") ago"
+        } else if let days = components.day, days > 0 {
+            if days >= 7 {
+                let weeks = days / 7
+                return "\(weeks) week\(weeks == 1 ? "" : "s") ago"
+            }
             return "\(days) day\(days == 1 ? "" : "s") ago"
+        } else if let hours = components.hour, hours > 0 {
+            return "\(hours) hour\(hours == 1 ? "" : "s") ago"
+        } else if let minutes = components.minute, minutes > 0 {
+            return "\(minutes) minute\(minutes == 1 ? "" : "s") ago"
         } else {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .none
-            return formatter.string(from: date)
+            return "Just now"
         }
     }
 }

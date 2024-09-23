@@ -27,7 +27,10 @@ struct FeedView: View {
                 }
             }
             .refreshable {
-                await viewModel.loadMorePosts()
+                viewModel.posts = []
+                Task {
+                    await viewModel.loadMorePosts()
+                }
             }
             .navigationTitle("BrainFeed")
         }
