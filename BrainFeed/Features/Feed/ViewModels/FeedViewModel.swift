@@ -67,20 +67,16 @@ class FeedViewModel: ObservableObject {
     }
     
     private func fetchPosts(page: Int, limit: Int) async throws -> [Post] {
-        // This is a placeholder function. Replace with actual API call in production.
-        // Simulating network delay
-        try await Task.sleep(nanoseconds: 1_000_000_000)
+        // Use the UserService to fetch random posts
+        let randomPosts = try await UserService.fetchRandomPosts(count: limit)
         
-        // Generate placeholder posts
-        return (0 ..< limit).map { index in
-            let postIndex = page * limit + index
-            return Post(
-                id: UUID().uuidString,
-                content: "This is post content for post #\(postIndex + 1)",
-                link: "https://example.com/post/\(postIndex + 1)",
-                title: "Post #\(postIndex + 1)",
-                likeCount: Int.random(in: 0 ... 100)
-            )
+        // If we received fewer posts than requested, it means we've reached the end
+        if randomPosts.count < limit {
+            canLoadMorePosts = false
         }
+        
+        return randomPosts
     }
+    
+    
 }

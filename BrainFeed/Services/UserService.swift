@@ -16,6 +16,14 @@ struct UserResponse: Codable {
     let user: User
 }
 
+struct RandomPostsResponse: Codable {
+    let posts: [Post]
+}
+
+struct LikeUnlikeResponse: Codable {
+    let message: String
+}
+
 class UserService {
     static func createUser(id: String) async throws -> User {
         print("Creating user with ID: \(id)")
@@ -110,6 +118,112 @@ class UserService {
             return posts
         } catch {
             print("Error fetching new posts: \(error.localizedDescription)")
+            throw error
+        }
+    }
+    
+    static func fetchRandomPosts(count: Int) async throws -> [Post] {
+        print("Fetching \(count) random posts")
+        guard var urlComponents = URLComponents(url: APIURLConstructor.makeURL(path: "/posts/random")!, resolvingAgainstBaseURL: true) else {
+            print("Error: Invalid URL for random posts fetch")
+            throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+        }
+            
+        urlComponents.queryItems = [URLQueryItem(name: "count", value: String(count))]
+            
+        guard let url = urlComponents.url else {
+            print("Error: Failed to construct URL with query parameters")
+            throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+        }
+            
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+                
+            print("Received data for random posts fetch. Size: \(data.count) bytes")
+                
+            // Print the entire JSON response
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw JSON response for random posts fetch:")
+                print(jsonString)
+            } else {
+                print("Unable to convert data to string for random posts fetch")
+            }
+                
+            let response = try JSONDecoder().decode(RandomPostsResponse.self, from: data)
+            print("Successfully decoded \(response.posts.count) random posts")
+            return response.posts
+        } catch {
+            print("Error fetching random posts: \(error.localizedDescription)")
+            throw error
+        }
+    }
+    
+    static func likePost(postId: String, userId: String) async throws {
+        print("Liking post with ID: \(postId) for user: \(userId)")
+        guard let url = APIURLConstructor.makeURL(path: "/posts/\(postId)/like") else {
+            print("Error: Invalid URL for liking post")
+            throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+        }
+            
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+        // Create the request body with userId
+        let requestBody = ["userId": userId]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+            
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+                
+            print("Received data for liking post. Size: \(data.count) bytes")
+                
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw JSON response for liking post:")
+                print(jsonString)
+            } else {
+                print("Unable to convert data to string for liking post")
+            }
+                
+            let response = try JSONDecoder().decode(LikeUnlikeResponse.self, from: data)
+            print("Successfully liked post. Server message: \(response.message)")
+        } catch {
+            print("Error liking post: \(error.localizedDescription)")
+            throw error
+        }
+    }
+
+    static func unlikePost(postId: String, userId: String) async throws {
+        print("Unliking post with ID: \(postId) for user: \(userId)")
+        guard let url = APIURLConstructor.makeURL(path: "/posts/\(postId)/unlike") else {
+            print("Error: Invalid URL for unliking post")
+            throw NSError(domain: "Invalid URL", code: 0, userInfo: nil)
+        }
+            
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+        // Create the request body with userId
+        let requestBody = ["userId": userId]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: requestBody)
+            
+        do {
+            let (data, _) = try await URLSession.shared.data(for: request)
+                
+            print("Received data for unliking post. Size: \(data.count) bytes")
+                
+            if let jsonString = String(data: data, encoding: .utf8) {
+                print("Raw JSON response for unliking post:")
+                print(jsonString)
+            } else {
+                print("Unable to convert data to string for unliking post")
+            }
+                
+            let response = try JSONDecoder().decode(LikeUnlikeResponse.self, from: data)
+            print("Successfully unliked post. Server message: \(response.message)")
+        } catch {
+            print("Error unliking post: \(error.localizedDescription)")
             throw error
         }
     }

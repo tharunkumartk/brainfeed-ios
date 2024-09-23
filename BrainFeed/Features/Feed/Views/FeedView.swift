@@ -5,28 +5,31 @@ struct FeedView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(viewModel.posts) { post in
-                    PostView(post: post)
-                        .onAppear {
-                            if post == viewModel.posts.last {
-                                Task {
-                                    await viewModel.loadMorePosts()
+            ScrollView {
+                LazyVStack(spacing: 10) {
+                    if let currentUser = viewModel.currentUser {
+                        ForEach(viewModel.posts) { post in
+                            PostView(post: post, isLiked: currentUser.likes.contains(post.id))
+                                .onAppear {
+                                    if post == viewModel.posts.last {
+                                        Task {
+                                            await viewModel.loadMorePosts()
+                                        }
+                                    }
                                 }
-                            }
                         }
-                }
-
-                if viewModel.isLoading {
-                    ProgressView()
-                        .frame(idealWidth: .infinity, alignment: .center)
+                    }
+                    if viewModel.isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .padding()
+                    }
                 }
             }
-            .listStyle(PlainListStyle())
-            .navigationTitle("BrainFeed")
             .refreshable {
                 await viewModel.loadMorePosts()
             }
+            .navigationTitle("BrainFeed")
         }
         .environmentObject(viewModel)
     }

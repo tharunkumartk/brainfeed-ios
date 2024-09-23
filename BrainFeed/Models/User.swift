@@ -12,3 +12,4 @@ struct User: Identifiable, Codable, Hashable {
     var likes: [String]
     var viewedPosts: [String]
 }
+

@@ -8,7 +8,8 @@
 import Foundation
 
 class APIURLConstructor {
-    static let baseURL = "https://brainfeed-api-server-1017028393149.us-central1.run.app" // Replace with your actual base URL
+//    static let baseURL = "https://brainfeed-api-server-1017028393149.us-central1.run.app" // Replace with your actual base URL
+    static let baseURL = "http://localhost:3000"
 
     static func makeURL(path: String) -> URL? {
         let fullURL = "\(baseURL)\(path)"

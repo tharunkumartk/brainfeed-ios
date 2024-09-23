@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4A91C27E2C9F5057005F64C5 /* BrainFeedApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91C27D2C9F5057005F64C5 /* BrainFeedApp.swift */; };
-		4A91C2802C9F5057005F64C5 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91C27F2C9F5057005F64C5 /* ContentView.swift */; };
 		4A91C2822C9F5058005F64C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A91C2812C9F5058005F64C5 /* Assets.xcassets */; };
 		4A91C2862C9F5058005F64C5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A91C2852C9F5058005F64C5 /* Preview Assets.xcassets */; };
 		4A91C2982C9F5453005F64C5 /* FeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91C2972C9F5453005F64C5 /* FeedView.swift */; };
@@ -23,7 +22,6 @@
 /* Begin PBXFileReference section */
 		4A91C27A2C9F5057005F64C5 /* BrainFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A91C27D2C9F5057005F64C5 /* BrainFeedApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrainFeedApp.swift; sourceTree = "<group>"; };
-		4A91C27F2C9F5057005F64C5 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4A91C2812C9F5058005F64C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4A91C2832C9F5058005F64C5 /* BrainFeed.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BrainFeed.entitlements; sourceTree = "<group>"; };
 		4A91C2852C9F5058005F64C5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -91,7 +89,6 @@
 			isa = PBXGroup;
 			children = (
 				4A91C27D2C9F5057005F64C5 /* BrainFeedApp.swift */,
-				4A91C27F2C9F5057005F64C5 /* ContentView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -233,7 +230,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A91C2A02C9F5674005F64C5 /* UserService.swift in Sources */,
-				4A91C2802C9F5057005F64C5 /* ContentView.swift in Sources */,
 				4A91C2982C9F5453005F64C5 /* FeedView.swift in Sources */,
 				4A91C29E2C9F5633005F64C5 /* User.swift in Sources */,
 				4A91C29A2C9F545E005F64C5 /* FeedViewModel.swift in Sources */,
