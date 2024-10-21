@@ -30,4 +30,6 @@ Brainfeed is a SwiftUI app designed to deliver a hyper-personalized and summariz
 
 After running the app, the newsfeed will automatically generate a personalized feed based on current events and present the most relevant content for you. 
 
-## Project Structure
+## API Server
+
+Brainfeed relies on an external API server to serve the curated posts. You can find more information or set up the API server here: [Brainfeed API Server](https://github.com/tharunkumartk/brainfeed-api-server).
