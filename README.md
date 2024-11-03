@@ -1,6 +1,6 @@
 # Brainfeed - iOS
 
-Brainfeed is a SwiftUI app designed to deliver a hyper-personalized and summarized newsfeed tailored to your interests. Using a state-of-the-art multi-armed bandit recommendation system, Brainfeed curates and generates around 500 posts per day, offering a productive feed based on current events.
+Brainfeed is a SwiftUI app designed to deliver a hyper-personalized and summarized newsfeed tailored to your interests. Using a state-of-the-art multi-armed bandit recommendation system, Brainfeed curates and generates around 500 posts per day, offering a productive feed based on current events. [Demo video](https://x.com/tiruppali/status/1843475795467219428)
 
 [Try it out on Testflight!](https://testflight.apple.com/join/Ap1Jgw8a)
 
